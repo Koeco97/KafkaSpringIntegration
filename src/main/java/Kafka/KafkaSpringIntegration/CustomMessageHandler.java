@@ -14,7 +14,7 @@ public class CustomMessageHandler extends MessageProducerSupport implements Mess
 
     @Override
     public void handleMessage(Message<?> message) throws MessagingException {
-        MessageSample messageSample = (MessageSample)message.getPayload();
+        MessageSample messageSample = (MessageSample) message.getPayload();
         messageSample.setHandledTimestamp(LocalDateTime.now().toString());
         sendMessage(MessageBuilder.withPayload(messageSample).build());
     }

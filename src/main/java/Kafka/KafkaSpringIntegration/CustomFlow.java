@@ -14,23 +14,18 @@ import org.springframework.kafka.core.KafkaTemplate;
 @Configuration
 @EnableIntegration
 public class CustomFlow {
-
-    private final ConsumerFactory consumerFactory;
-    private final KafkaTemplate<String, MessageSample> kafkaTemplate;
-    private final CustomMessageHandler customMessageHandler;
-
     @Autowired
-    public CustomFlow(ConsumerFactory<String, MessageSample> consumerFactory, KafkaTemplate<String, MessageSample> kafkaTemplate, CustomMessageHandler customMessageHandler) {
-        this.consumerFactory = consumerFactory;
-        this.kafkaTemplate = kafkaTemplate;
-        this.customMessageHandler = customMessageHandler;
-    }
+    private ConsumerFactory consumerFactory;
+    @Autowired
+    private KafkaTemplate<String, MessageSample> kafkaTemplate;
+    @Autowired
+    private CustomMessageHandler customMessageHandler;
 
     @Bean
     IntegrationFlow fromKafka() {
         return IntegrationFlows.from(Kafka.messageDrivenChannelAdapter(consumerFactory, "topic1"))
-               .handle(customMessageHandler)
-               .handle(Kafka.outboundChannelAdapter(kafkaTemplate).topic("topic2"))
-               .get();
+                .handle(customMessageHandler)
+                .handle(Kafka.outboundChannelAdapter(kafkaTemplate).topic("topic2"))
+                .get();
     }
 }
