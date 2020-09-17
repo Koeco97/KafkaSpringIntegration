@@ -14,6 +14,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 @Configuration
 @EnableIntegration
 public class CustomFlow {
+    private static final String TOPIC_FROM = "topic1";
+    private static final String TOPIC_TO = "topic2";
     @Autowired
     private ConsumerFactory consumerFactory;
     @Autowired
@@ -21,11 +23,12 @@ public class CustomFlow {
     @Autowired
     private CustomMessageHandler customMessageHandler;
 
+    
     @Bean
     IntegrationFlow fromKafka() {
-        return IntegrationFlows.from(Kafka.messageDrivenChannelAdapter(consumerFactory, "topic1"))
+        return IntegrationFlows.from(Kafka.messageDrivenChannelAdapter(consumerFactory, TOPIC_FROM))
                 .handle(customMessageHandler)
-                .handle(Kafka.outboundChannelAdapter(kafkaTemplate).topic("topic2"))
+                .handle(Kafka.outboundChannelAdapter(kafkaTemplate).topic(TOPIC_TO))
                 .get();
     }
 }
