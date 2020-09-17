@@ -17,7 +17,7 @@ public class CustomFlow {
     @Autowired
     private ConsumerFactory consumerFactory;
     @Autowired
-    private KafkaTemplate<String, MessageSample> kafkaTemplate;
+    private KafkaTemplate kafkaTemplate;
     @Autowired
     private CustomMessageHandler customMessageHandler;
 
